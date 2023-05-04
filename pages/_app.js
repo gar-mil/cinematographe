@@ -1,7 +1,6 @@
 import Head from "next/head";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@/components/globals.css'
-import { useEffect } from "react";
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
