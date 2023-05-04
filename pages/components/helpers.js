@@ -59,10 +59,10 @@ export async function search(title,page = 1)
 }
 
 /**
-   * ParseSearchResponse
-   * Parses a JSON object that has been returned from an OMDB search.
-   * @param {Object} info JSON object from OMDB
-   */
+ * ParseSearchResponse
+ * Parses a JSON object that has been returned from an OMDB search.
+ * @param {Object} info JSON object from OMDB
+ */
 function ParseSearchResponse(info,activePage = 1,title='')
 {
   info.data.getMediaList.Response == "True" ? ProcessSearchSuccess(info,'s',activePage) : info.data.getMediaList.Error === 'Too many results.' ? TooManyResults(title) : console.log(info.data.getMediaList.Error);
@@ -71,98 +71,98 @@ function ParseSearchResponse(info,activePage = 1,title='')
     const getMediaTitle = (await getMediaTitleGQL(title));
     getMediaTitle.data.getMediaTitle.Response == "True" ? ProcessSearchSuccess(getMediaTitle,'t',activePage) : getMediaTitle.data.getMediaTitle.Error === 'Too many results.' ? TooManyResults(title) : console.log(info.data.getMediaTitle.Error);
   }
+}
 
+/**
+ * ProcessSearchSuccess
+ * React componenet. Creates list of movies from data returned by getMediaList.
+ * @param {Object} info JSON object returned from OMDb via GraphQL
+ * @param {String} searchType What type of search this is (valid values: 's', 't')
+ * @param {Number} activePage Current active pagination page
+ */
+function ProcessSearchSuccess(info,searchType,activePage = 1)
+{
   /**
-   * ProcessSearchSuccess
-   * React componenet. Creates list of movies from data returned by getMediaList.
-   * @param {Object} info JSON object returned from OMDb via GraphQL
-   * @param {String} searchType What type of search this is (valid values: 's', 't')
-   * @param {Number} activePage Current active pagination page
+   * PaginationSection
+   * Generates the pagination selector below the search results
+   * @param {*} props React properties [active: Number (Current active pagination page), totalResults: Number (total number of results that OMDb claims match this search)]
+   * @returns 
    */
-  function ProcessSearchSuccess(info,searchType,activePage = 1)
+  const PaginationSection = (props) =>
   {
-    /**
-     * PaginationSection
-     * Generates the pagination selector below the search results
-     * @param {*} props React properties [active: Number (Current active pagination page), totalResults: Number (total number of results that OMDb claims match this search)]
-     * @returns 
-     */
-    const PaginationSection = (props) =>
+    
+    let active = props.active;
+    let totalResults = props.totalResults;
+    let pages = Math.ceil(totalResults / 10);
+    let items = [];
+    if(pages > 10)
     {
-      
-      let active = props.active;
-      let totalResults = props.totalResults;
-      let pages = Math.ceil(totalResults / 10);
-      let items = [];
-      if(pages > 10)
+      items.push(createPaginationItem(active-1,active,'Previous'));
+      items.push(createPaginationItem(1,active));
+      items.push(createPaginationItem(2,active));
+      items.push(<Pagination.Ellipsis key={'Ellipsis1'} />);
+      const midpoint = Math.ceil(pages/2);
+      for (let i = midpoint; i <= midpoint + 2; i++) 
       {
-        items.push(createPaginationItem(active-1,active,'Previous'));
-        items.push(createPaginationItem(1,active));
-        items.push(createPaginationItem(2,active));
-        items.push(<Pagination.Ellipsis key={'Ellipsis1'} />);
-        const midpoint = Math.ceil(pages/2);
-        for (let i = midpoint; i <= midpoint + 2; i++) 
-        {
-          items.push(createPaginationItem(i,active));
-        }
-        items.push(<Pagination.Ellipsis key={'Ellipsis2'} />);
-        items.push(createPaginationItem(pages-1,active));
-        items.push(createPaginationItem(pages,active));
-        items.push(createPaginationItem(active+1,active,'Next'));
+        items.push(createPaginationItem(i,active));
       }
-      else
+      items.push(<Pagination.Ellipsis key={'Ellipsis2'} />);
+      items.push(createPaginationItem(pages-1,active));
+      items.push(createPaginationItem(pages,active));
+      items.push(createPaginationItem(active+1,active,'Next'));
+    }
+    else
+    {
+      for (let i = 1; i < pages; i++) 
       {
-        for (let i = 1; i < pages; i++) 
-        {
-          items.push(createPaginationItem(i,active));
-        }
+        items.push(createPaginationItem(i,active));
       }
-  
-      return (
-        <div>
-          <Pagination>{items}</Pagination>
-        </div>
-      );
     }
 
-    /**
-     * createPaginationItem
-     * React component. Generates an item that appears in the pagination selector.
-     * @param {Number} i Number of page to be linked
-     * @param {Number} activePage Number of the active page, not necessarily the same as i
-     * @param {String} pageText Human-readable text to display in the selector. Optional, defaults to i
-     * @returns 
-     */
-    function createPaginationItem(i,activePage,pageText = i)
-    {
-      return <Pagination.Item
-          key={pageText}
-          active={i == activePage}
-          onClick={() => onPageChange(i)}
-        >
-          {pageText}
-        </Pagination.Item>
-    };
-
-    const mediaList = searchType === 's' ? info.data.getMediaList : {'Media':[info.data.getMediaTitle]};
-    let listRoot = createRoot(document.getElementById('searchResults'));
-    listRoot.render(
-      <>
-        <ListGroup.Item key='movies' className='no-border'>
-          <Row className='imageRow'>
-            <ListNodes mediaList={mediaList.Media} />
-          </Row>
-        </ListGroup.Item>
-        <Row className='auto-center pageRow'>
-          <Col>
-            <PaginationSection totalResults={mediaList.totalResults} active={activePage} />
-          </Col>
-        </Row>
-        <div id='detailsModal'  className='no-display' />
-      </>
+    return (
+      <div>
+        <Pagination>{items}</Pagination>
+      </div>
     );
   }
+
+  const mediaList = searchType === 's' ? info.data.getMediaList : {'Media':[info.data.getMediaTitle]};
+  let listRoot = createRoot(document.getElementById('searchResults'));
+  listRoot.render(
+    <>
+      <ListGroup.Item key='movies' className='no-border'>
+        <Row className='imageRow'>
+          <ListNodes mediaList={mediaList.Media} />
+        </Row>
+      </ListGroup.Item>
+      <Row className='auto-center pageRow'>
+        <Col>
+          <PaginationSection totalResults={mediaList.totalResults} active={activePage} />
+        </Col>
+      </Row>
+      <div id='detailsModal'  className='no-display' />
+    </>
+  );
 }
+
+/**
+ * createPaginationItem
+ * React component. Generates an item that appears in the pagination selector.
+ * @param {Number} i Number of page to be linked
+ * @param {Number} activePage Number of the active page, not necessarily the same as i
+ * @param {String} pageText Human-readable text to display in the selector. Optional, defaults to i
+ * @returns 
+ */
+function createPaginationItem(i,activePage,pageText = i)
+{
+  return <Pagination.Item
+      key={pageText}
+      active={i == activePage}
+      onClick={() => onPageChange(i)}
+    >
+      {pageText}
+    </Pagination.Item>
+};
 
 /**
    * ParseIdResponse
