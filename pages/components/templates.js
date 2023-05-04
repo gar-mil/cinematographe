@@ -1,12 +1,12 @@
 import { Container, Navbar, ListGroup, Form, Button, FloatingLabel, ButtonToolbar, InputGroup } from 'react-bootstrap';
 import Image from 'next/image';
-import { searchUpdate, throttle, manualSearch, closeDetails } from '@/components/helpers.js';
+import throttle, { searchUpdate, manualSearch, closeDetails } from '@/components/helpers.js';
 
 /**
  * NavBar at top of page.
  * @returns React component
  */
-export function NavSection()
+export default function NavSection()
 {
     return (
         <>
