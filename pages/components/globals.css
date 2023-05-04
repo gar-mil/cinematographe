@@ -72,6 +72,11 @@ img.imageSearch
   box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
 }
 
+img.imageModal
+{
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+
 #__next > .container
 {
   max-width: 1140px;
@@ -110,4 +115,57 @@ div.imageRow
 .do-display
 {
   display: block !important;
+}
+
+.no-padding
+{
+  padding: 0;
+}
+
+.innerContainer
+{
+  min-height: 500px;
+}
+
+.innerContainer-bg, #searchResults, #detailsResults
+{
+  background: #aaa;
+}
+
+#detailsResults
+{
+  padding: 0 10% 0 10%
+}
+
+.modal-bg
+{
+  background: #ccc;
+}
+
+.list-group-item
+{
+  background: #aaa !important;
+}
+
+.vh100
+{
+  min-height: 50vh;
+}
+
+.footerC
+{
+  flex: 1 1 auto;
+  background: #aaa;
+}
+
+.navbar
+{
+  height: 74px;
+}
+
+#modalReleased
+{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 35px;
 }

@@ -80,7 +80,7 @@ export const resolvers =
     },
     getMedia: async (_, args) => {
       try {
-        const URL = process.env.OMDB_URL+process.env.OMDB_KEY+`&i=${args.imdbID}`;
+        const URL = process.env.OMDB_URL+process.env.OMDB_KEY+`&i=${args.imdbID}&plot=full`;
         const media = await fetch(URL);
         const mediaJson = await media.json();
         return {

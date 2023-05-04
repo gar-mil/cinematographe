@@ -1,11 +1,9 @@
 import { getMediaGQL, getMediaListGQL } from '@/lib/gql';
 import { createRoot } from 'react-dom/client';
-import { ListGroup, Row, Col } from 'react-bootstrap';
+import { ListGroup, Row, Col, Badge } from 'react-bootstrap';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Pagination from 'react-bootstrap/Pagination';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import { getMediaTitleGQL } from '../../lib/gql';
 
 /**
@@ -126,7 +124,7 @@ export async function search(title,page = 1)
               <PaginationSection totalResults={mediaList.totalResults} active={activePage} />
             </Col>
           </Row>
-          <div id='detailsModal' />
+          <div id='detailsModal'  className='no-display' />
         </>
       );
     }
@@ -164,52 +162,48 @@ export async function search(title,page = 1)
     info.data.getMedia.Response == "True" ? ProcessIdSuccess({info}) : console.log(info.data.getMedia.Error);
     function ProcessIdSuccess({info})
     {
-      const noDisplay = document.querySelectorAll('.no-display');
-      noDisplay.forEach((el) => {
-        el.classList.remove('no-display');
-        el.classList.add('do-display');
-      });
-
-      let modalRoot = createRoot(document.getElementById('detailsModal'));
-      modalRoot.render(
+      const elDM = document.getElementById('detailsResults');
+      const elSR = document.getElementById('searchResults');
+      const elSerBar = document.getElementById('searchBar');
+      const elDeBtn = document.getElementById('detailsButton');
+      elSerBar.classList.add('no-display');
+      elSR.classList.add('no-display');
+      elDM.classList.remove('no-display');
+      elDeBtn.classList.remove('no-display');
+      
+      let listRoot = createRoot(document.getElementById('detailsResults'));
+      listRoot.render(
         <>
-          <Modal show={true} backdrop={false} fullscreen={false} id='newModal'>
-            <Modal.Header closeButton><h3>{info.data.getMedia.Title}</h3></Modal.Header>
-            <Modal.Body>
-              <Row>
-                <Col>
-                  <ImageWithFallback className='imageModal' src={info.data.getMedia.Poster === 'N/A'?'/noPoster.webp':info.data.getMedia.Poster.replace('SX300','SX400_Q85')} altTag={info.data.getMedia.Title} width={300} height={444} fallbackSrc='/noPoster.webp' />
-                </Col>
-                <Col>
-                  <div id ="modalReleased">{info.data.getMedia.Released} ◾ {info.data.getMedia.Rated} ◾ {info.data.getMedia.Runtime}</div>
-                  <div id="modalGenre">Genre: {info.data.getMedia.Genre}</div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>{info.data.getMedia.Plot}</Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div id="modalDirector">Director: {info.data.getMedia.Director}</div>
-                  <div id="modalActors">Actor(s): {info.data.getMedia.Actors}</div>
-                  <div id="modalWriter">Writer(s): {info.data.getMedia.Writer}</div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div id="modalLanguage">Languages: {info.data.getMedia.Language}</div>
-                  <div id="modalAwards">Awards: {info.data.getMedia.Awards}</div>
-                  <div id="modalImdbRating">IMDb Rating: {info.data.getMedia.imdbRating} from {info.data.getMedia.imdbVotes} votes</div>
-                  <div id="modalBoxOffice">Box Office: {info.data.getMedia.BoxOffice}</div>
-                </Col>
-                <Col>
-                  <div id="modalCountry">Country: {info.data.getMedia.Country}</div>
-                </Col>
-              </Row>
-            </Modal.Body>
-          </Modal>
-        </>
-      );
+          <Row>
+            <Col>
+              <h3>{info.data.getMedia.Title}</h3>
+            </Col>
+            <Col>
+            <div id ="modalReleased"><strong>{info.data.getMedia.Released} ◾ {info.data.getMedia.Rated} ◾ {info.data.getMedia.Runtime}</strong></div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ImageWithFallback className='imageModal' src={info.data.getMedia.Poster === 'N/A'?'/noPoster.webp':info.data.getMedia.Poster.replace('SX300','SX400_Q85')} altTag={info.data.getMedia.Title} width={300} height={444} fallbackSrc='/noPoster.webp' />
+            </Col>
+            <Col>
+              <BadgeNodes genres={info.data.getMedia.Genre}/>
+              <div id="modalDirector"><strong>Director:</strong> {info.data.getMedia.Director}</div>
+              <div id="modalActors"><strong>Actor(s):</strong> {info.data.getMedia.Actors}</div>
+              <div id="modalWriter"><strong>Writer(s):</strong> {info.data.getMedia.Writer}</div>
+              <div id="modalLanguage"><strong>Languages:</strong> {info.data.getMedia.Language}</div>
+              <div id="modalCountry"><strong>Country:</strong> {info.data.getMedia.Country}</div>
+              <div id="modalAwards"><strong>Awards:</strong> {info.data.getMedia.Awards}</div>
+              <div id="modalBoxOffice"><strong>Box Office:</strong> {info.data.getMedia.BoxOffice}</div>
+              <div id="modalImdbRating">{info.data.getMedia.imdbRating}⭐ <small>{info.data.getMedia.imdbVotes} votes</small></div>
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col>{info.data.getMedia.Plot}</Col>
+          </Row>
+          <br />
+        </>);
     }
   }
 
@@ -229,6 +223,16 @@ export async function search(title,page = 1)
           </a>
           <div className='imageTitle'><strong>{media.Title}</strong><br/>{media.Year}</div>
         </Col>)
+    );
+  }
+
+  function BadgeNodes(props)
+  {
+    const genreSplit = props.genres.split(", ");
+    return(
+      genreSplit.map(genre => 
+        <Badge key={genre} bg="secondary">{genre}</Badge>
+        )
     );
   }
 
@@ -259,4 +263,16 @@ export async function search(title,page = 1)
   {
     search((document.getElementById('searchBox')).value,page.toString());
   }
+}
+
+export function closeDetails()
+{
+  const elDM = document.getElementById('detailsResults');
+  const elSR = document.getElementById('searchResults');
+  const elSerBar = document.getElementById('searchBar');
+  const elDeBtn = document.getElementById('detailsButton');
+  elSerBar.classList.remove('no-display');
+  elSR.classList.remove('no-display');
+  elDM.classList.add('no-display');
+  elDeBtn.classList.add('no-display');
 }
