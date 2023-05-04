@@ -27,5 +27,5 @@ BASE_URL = "http://localhost:3000/"
 ``` npm run dev ```
 9. In a browser, navigate to `http://localhost:3000/`. Note that this is http, not https, due to local SSL cert warnings.
 
-# License
+## License
 Cinématographe is licensed under the MIT License. Please see the [attached license file](https://github.com/gar-mil/Cinématographe/blob/main/LICENSE) for more information.
