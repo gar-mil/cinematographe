@@ -1,6 +1,7 @@
 import { Container, Navbar, ListGroup, Form, Button, FloatingLabel, ButtonToolbar, InputGroup } from 'react-bootstrap';
 import Image from 'next/image';
 import throttle, { searchUpdate, manualSearch, closeDetails } from '@/components/helpers.js';
+import { useState } from 'react';
 
 /**
  * NavBar at top of page.
@@ -27,7 +28,7 @@ export default function NavSection()
                     <FloatingLabel label="Search">
                         <Form.Control className="border-radius-left-only" type="text" placeholder="Search..." id="searchBox" onInput={throttle(searchUpdate,300)} />
                     </FloatingLabel>
-                    <Button variant="dark" onClick={manualSearch}>🔍</Button>
+                    <Button variant="dark" onClick={throttle(manualSearch, 300)}>🔍</Button>
                     </InputGroup>
                 </ButtonToolbar>
                 <ButtonToolbar id="detailsButton" className='no-display'>
@@ -52,3 +53,26 @@ export function ListRoot()
         </>
     )
 }
+
+/**
+ * ImageWithFallback
+ * React component. Generates an image that has a generic fallback image should the remote image src retrival fail.
+ * @param {*} props React properties [altTag: String (img alt tag), fallbackSrc: String (URL of generic movie poster image that will display if poster lookup fails)]
+ * @returns <ImageWithFallback> React object
+ */
+export const ImageWithFallback = (props) => 
+{
+    const { src, fallbackSrc, altTag, ...rest } = props;
+    const [imgSrc, setImgSrc] = useState(src);
+
+    return (
+        <Image
+            {...rest}
+            src={imgSrc} 
+            alt={altTag}
+            onError={() => {
+                setImgSrc(fallbackSrc);
+            }}
+        />
+    );
+};
