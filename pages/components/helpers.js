@@ -227,11 +227,10 @@ export async function search(title,page = 1)
               <div id="modalImdbRating">{info.data.getMedia.imdbRating}⭐ <small>{info.data.getMedia.imdbVotes} votes</small></div>
             </Col>
           </Row>
-          <br />
           <Row>
-            <Col>{info.data.getMedia.Plot}</Col>
+            <Col><br />{info.data.getMedia.Plot}<br /></Col>
           </Row>
-          <br />
+
         </>);
     }
   }
