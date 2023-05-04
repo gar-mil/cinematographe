@@ -213,7 +213,7 @@ export async function search(title,page = 1)
           </Row>
           <Row>
             <Col>
-              <ImageWithFallback className='imageModal' src={info.data.getMedia.Poster === 'N/A'?'/noPoster.webp':info.data.getMedia.Poster.replace('SX300','SX400_Q85')} altTag={info.data.getMedia.Title} width={300} height={444} fallbackSrc='/noPoster.webp' />
+              <ImageWithFallback className='imageModal' placeholder='blur' blurDataURL='blur.jpg' src={info.data.getMedia.Poster === 'N/A'?'/noPoster.webp':info.data.getMedia.Poster.replace('SX300','SX400_Q85')} altTag={info.data.getMedia.Title} width={300} height={444} fallbackSrc='/noPoster.webp' />
             </Col>
             <Col>
               <BadgeNodes genres={info.data.getMedia.Genre}/>
@@ -240,7 +240,7 @@ export async function search(title,page = 1)
    * ListNodes
    * React component. [mediaList]
    * @param {*} props React properties [altTag, fallbackSrc]
-   * @returns <ImageWithFallback> React object
+   * @returns React object
    */
   function ListNodes(props) 
   {
@@ -248,7 +248,7 @@ export async function search(title,page = 1)
       props.mediaList.map(media => 
         <Col key={media.imdbID} onClick={() => MovieDetails(media.imdbID)} md="auto" className="flex-fill justify-content-center cursor-pointer">
           <a className='imageWrapper'>
-            <ImageWithFallback className='imageSearch' src={media.Poster === 'N/A'?'/noPoster.webp':media.Poster.replace('SX300','SX167_Q50')} altTag={media.Title} width={167} height={250} fallbackSrc='/noPoster.webp' />
+            <ImageWithFallback className='imageSearch' placeholder='blur' blurDataURL='blur.jpg' src={media.Poster === 'N/A'?'/noPoster.webp':media.Poster.replace('SX300','SX167_Q50')} altTag={media.Title} width={167} height={250} fallbackSrc='/noPoster.webp' />
           </a>
           <div className='imageTitle'><strong>{media.Title}</strong><br/>{media.Year}</div>
         </Col>)
@@ -259,7 +259,7 @@ export async function search(title,page = 1)
    * BadgeNodes
    * React component. Accepts a string of comma-separated genres, splits them into an array, and generates bootstrap badges for each genre.
    * @param {*} props React properties [genres: String (Comma-separated list of genres)]
-   * @returns <ImageWithFallback> React object
+   * @returns React object
    */
   function BadgeNodes(props)
   {
