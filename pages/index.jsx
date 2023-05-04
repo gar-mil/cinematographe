@@ -1,6 +1,6 @@
-import { Container, Row, Col, Form, Button, FloatingLabel, ButtonToolbar, InputGroup } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import ThemeProvider from 'react-bootstrap/ThemeProvider';
-import { NavSection, ListRoot } from '@/components/templates.js';
+import NavSection, { ListRoot } from '@/components/templates.js';
 
 export default function Index() 
 {

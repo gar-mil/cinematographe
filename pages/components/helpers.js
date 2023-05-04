@@ -32,7 +32,7 @@ export const manualSearch = () =>
  * @param {Number} delay Millisecond delay between function calls
  * @returns 
  */
-export function throttle(func, delay) 
+export default function throttle(func, delay) 
 {
   let time;
   return function (...args) 
