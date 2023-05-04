@@ -1,6 +1,6 @@
 body
 {
-  background: #333;
+  background: #ccc;
 }
 
 input[type="text"], textarea
@@ -129,7 +129,7 @@ div.imageRow
 
 .innerContainer-bg, #searchResults, #detailsResults
 {
-  background: #aaa;
+  background: #ccc;
 }
 
 #detailsResults
@@ -144,7 +144,7 @@ div.imageRow
 
 .list-group-item
 {
-  background: #aaa !important;
+  background: #ccc !important;
 }
 
 .vh100
@@ -158,11 +158,9 @@ div.imageRow
   background: #aaa;
 }
 
-.navbar
+.introCol
 {
-  height: 74px;
-  box-shadow: black 1px 1px 2px;
-  z-index: 1;
+  padding: 20px 50px !important;
 }
 
 #modalReleased
@@ -170,4 +168,24 @@ div.imageRow
   display: inline-block;
   vertical-align: middle;
   line-height: 35px;
+}
+
+/* navbar */
+.navbar
+{
+  background: #333e4b;
+  height: 74px;
+  box-shadow: black 1px 1px 2px;
+  z-index: 1;
+}
+
+.navbar-brand
+{
+  color: #ddd;
+  text-shadow: 2px 2px 3px #000;
+}
+
+.navbar-brand:hover
+{
+  color: #ddd !important;
 }

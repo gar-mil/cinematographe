@@ -7,7 +7,7 @@ export function NavSection()
 {
     return (
         <>
-            <Navbar bg="secondary" variant="secondary">
+            <Navbar variant="secondary">
             <Container>
                 <Navbar.Brand>
                 <Image
