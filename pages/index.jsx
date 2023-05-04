@@ -6,9 +6,10 @@ import { useContext, createContext } from 'react';
 export default function Index() 
 {
   return (
+    <>
+    <NavSection/>
     <Container className="no-padding">
       <ThemeProvider breakpoints={['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs']} minBreakpoint="xxs">
-        <NavSection/>
         <Container className="innerContainer innerContainer-bg no-padding vh100">
           <Row>
             <Col id="errorDisplay"></Col>
@@ -22,6 +23,7 @@ export default function Index()
       </ThemeProvider>
       <footer className="footerC" />
     </Container>
+    </>
   );
 }
 
