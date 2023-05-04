@@ -53,8 +53,9 @@ type  Sources
 
 type  Query 
 {
-    getMediaList(title: String!,page: String!): Search
+    getMediaList(title: String!,page: String!,mType: String): Search
     getMedia(imdbID: String!): IndividualMedia
+    getMediaTitle(title: String!): IndividualMedia
 }`
 
 export const resolvers = 
@@ -62,7 +63,9 @@ export const resolvers =
   Query: {
     getMediaList: async (_, args) => {
       try {
-        const mediaList = await fetch(process.env.OMDB_URL+process.env.OMDB_KEY+`&s=${args.title}`+`&page=${args.page}`);
+        let mTypeText = args.mType ? `&type=${args.mType}` : '';
+        const URL = process.env.OMDB_URL+process.env.OMDB_KEY+`&s=${args.title}`+`&page=${args.page}${mTypeText}`;
+        const mediaList = await fetch(URL);
         const mediaListJson = await mediaList.json();
         const response = {
           Response: mediaListJson.Response,
@@ -78,6 +81,44 @@ export const resolvers =
     getMedia: async (_, args) => {
       try {
         const URL = process.env.OMDB_URL+process.env.OMDB_KEY+`&i=${args.imdbID}`;
+        const media = await fetch(URL);
+        const mediaJson = await media.json();
+        return {
+            Title: mediaJson.Title,
+            Year: mediaJson.Year,
+            Rated: mediaJson.Rated,
+            Released: mediaJson.Released,
+            Runtime: mediaJson.Runtime,
+            Genre: mediaJson.Genre,
+            Director: mediaJson.Director,
+            Writer: mediaJson.Writer,
+            Actors: mediaJson.Actors,
+            Plot: mediaJson.Plot,
+            Language: mediaJson.Language,
+            Country: mediaJson.Country,
+            Awards: mediaJson.Awards,
+            Poster: mediaJson.Poster,
+            Ratings: mediaJson.Ratings,
+            Metascore: mediaJson.Metascore,
+            imdbRating: mediaJson.imdbRating,
+            imdbVotes: mediaJson.imdbVotes,
+            imdbID: mediaJson.imdbID,
+            Type: mediaJson.Type,
+            DVD: mediaJson.DVD,
+            BoxOffice: mediaJson.BoxOffice,
+            Production: mediaJson.Production,
+            Website: mediaJson.Website,
+            Response: mediaJson.Response,
+            Error: mediaJson.Error,
+            totalResults: mediaJson.totalResults
+        };
+      } catch (e) {
+        throw e;
+      }
+    },
+    getMediaTitle: async (_, args) => {
+      try {
+        const URL = process.env.OMDB_URL+process.env.OMDB_KEY+`&t=${args.title}`;
         const media = await fetch(URL);
         const mediaJson = await media.json();
         return {
