@@ -246,7 +246,7 @@ export async function search(title,page = 1)
   {
     return(
       props.mediaList.map(media => 
-        <Col key={media.imdbID} onClick={() => MovieDetails(media.imdbID)} md="auto" className="flex-fill justify-content-center cursor-pointer">
+        <Col key={media.imdbID} onClick={() => throttle(MovieDetails(media.imdbID),2000)} md="auto" className="flex-fill justify-content-center cursor-pointer">
           <a className='imageWrapper'>
             <ImageWithFallback className='imageSearch' placeholder='blur' blurDataURL='blur.jpg' src={media.Poster === 'N/A'?'/noPoster.webp':media.Poster.replace('SX300','SX167_Q50')} altTag={media.Title} width={167} height={250} fallbackSrc='/noPoster.webp' />
           </a>
