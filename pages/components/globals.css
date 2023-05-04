@@ -1,0 +1,113 @@
+body
+{
+  background: #333;
+}
+
+input[type="text"], textarea
+{
+  background: #bbb;
+}
+
+button.btn-primary
+{
+  background-color: #0c0cab !important;
+}
+
+.border-radius-left-only
+{
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.border-radius-right-only
+{
+  border-radius-top-left: 0 !important;
+  border-radius-bottom-left: 0 !important;
+}
+
+.listTitle
+{
+  font-weight: bold;
+}
+
+div.imageTitle
+{
+  display: none;
+  position: relative;
+  text-align: center;
+  top: -170px;
+}
+
+div.imageTitle:hover, a.imageWrapper:hover + div
+{
+  display: block;
+
+}
+
+img.imageSearch:hover, a.imageWrapper:hover + div
+{
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
+img.imageSearch:hover, div.imageTitle:hover + div
+{
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
+div.imageTitle
+{
+  opacity: 1 !important;
+  filter: none !important;
+  pointer-events: none;
+  height: 0px;
+  max-width: 167px;
+  margin: auto;
+}
+
+img.imageSearch
+{
+  margin-top:50px;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+
+#__next > .container
+{
+  max-width: 1140px;
+}
+
+div.imageRow
+{
+  text-align: center;
+}
+
+.auto-center
+{
+  margin: auto;
+}
+
+.pageRow
+{
+  margin-top: 30px;
+}
+
+.no-border
+{
+  border: none !important;
+}
+
+.cursor-pointer
+{
+  cursor: pointer;
+}
+
+.no-display
+{
+  display: none !important;
+}
+
+.do-display
+{
+  display: block !important;
+}
