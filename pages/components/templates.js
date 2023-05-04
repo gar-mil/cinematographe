@@ -1,8 +1,7 @@
-import { Container, Navbar, ListGroup } from 'react-bootstrap';
+import { Container, Navbar, ListGroup, Row, Col, Form, Button, FloatingLabel, ButtonToolbar, InputGroup } from 'react-bootstrap';
 import Image from 'next/image';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
+import { searchUpdate, throttle, manualSearch } from '@/components/helpers.js';
 
 export function NavSection()
 {
@@ -20,6 +19,14 @@ export function NavSection()
                 />{' '}
                 Cinematographe
                 </Navbar.Brand>
+                <ButtonToolbar aria-label="Toolbar with Button groups">
+                <InputGroup hasValidation>
+                    <FloatingLabel label="Search">
+                        <Form.Control className="border-radius-left-only" type="text" placeholder="Search..." id="searchBox" onInput={throttle(searchUpdate,300)} />
+                    </FloatingLabel>
+                    <Button variant="primary" onClick={manualSearch}>🔍</Button>
+              </InputGroup>
+            </ButtonToolbar>
             </Container>
             </Navbar>
         </>

@@ -12,18 +12,6 @@ export default function Index()
         <NavSection/>
         <br />
         <Row>
-          <Col>
-            <ButtonToolbar className="mb-5" aria-label="Toolbar with Button groups">
-              <InputGroup hasValidation>
-                <FloatingLabel label="Search">
-                    <Form.Control className="border-radius-left-only" type="text" placeholder="Search..." id="searchBox" onInput={throttle(searchUpdate,300)} />
-                </FloatingLabel>
-                <Button variant="primary" onClick={manualSearch}>🔍</Button>
-              </InputGroup>
-            </ButtonToolbar>
-          </Col>
-        </Row>
-        <Row>
           <Col id="errorDisplay"></Col>
         </Row>
         <Row>
