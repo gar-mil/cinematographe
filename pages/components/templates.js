@@ -1,8 +1,11 @@
-import { Container, Navbar, ListGroup, Row, Col, Form, Button, FloatingLabel, ButtonToolbar, InputGroup } from 'react-bootstrap';
+import { Container, Navbar, ListGroup, Form, Button, FloatingLabel, ButtonToolbar, InputGroup } from 'react-bootstrap';
 import Image from 'next/image';
-import { useState } from 'react';
 import { searchUpdate, throttle, manualSearch, closeDetails } from '@/components/helpers.js';
 
+/**
+ * NavBar at top of page.
+ * @returns React component
+ */
 export function NavSection()
 {
     return (
@@ -36,6 +39,10 @@ export function NavSection()
     )
 }
 
+/**
+ * Lists of search results and movie details.
+ * @returns  React component
+ */
 export function ListRoot()
 {
     return (
