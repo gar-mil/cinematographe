@@ -83,6 +83,7 @@ export async function search(title,page = 1)
         let items = [];
         if(pages > 10)
         {
+          items.push(createPaginationItem(active-1,active,'Previous'));
           items.push(createPaginationItem(1,active));
           items.push(createPaginationItem(2,active));
           items.push(<Pagination.Ellipsis key={'Ellipsis1'} />);
@@ -94,6 +95,7 @@ export async function search(title,page = 1)
           items.push(<Pagination.Ellipsis key={'Ellipsis2'} />);
           items.push(createPaginationItem(pages-1,active));
           items.push(createPaginationItem(pages,active));
+          items.push(createPaginationItem(active+1,active,'Next'));
         }
         else
         {
@@ -109,6 +111,17 @@ export async function search(title,page = 1)
           </div>
         );
       }
+
+      function createPaginationItem(i,activePage,pageText = i)
+      {
+        return <Pagination.Item
+            key={pageText}
+            active={i == activePage}
+            onClick={() => onPageChange(i)}
+          >
+            {pageText}
+          </Pagination.Item>
+      };
 
       const mediaList = searchType === 's' ? info.data.getMediaList : {'Media':[info.data.getMediaTitle]};
       let listRoot = createRoot(document.getElementById('searchResults'));
@@ -129,17 +142,6 @@ export async function search(title,page = 1)
       );
     }
   }
-
-  function createPaginationItem(i,activePage)
-  {
-    return <Pagination.Item
-        key={i}
-        active={i == activePage}
-        onClick={() => onPageChange(i)}
-      >
-        {i}
-      </Pagination.Item>
-  };
 
   async function MovieDetails(imdbID)
   {
