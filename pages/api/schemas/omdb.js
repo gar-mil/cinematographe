@@ -1,3 +1,11 @@
+/**
+ * typeDefs for GraphQL. 
+ * type Search: Data types for an OMDb bulk search operation.
+ * type IndividualMedia: Data types for individual movie information (title and IMDb ID lookups). 
+ * type ResponseInfo: Data types for generic OMDb response information (all queries).
+ * type Sources: Data types for Ratings sub-information (child type of IndividualMedia).
+ * See: https://www.apollographql.com/tutorials/fullstack-quickstart/02-building-a-schema
+ */
 export const typeDefs = `
 type  Search 
 {
@@ -58,6 +66,13 @@ type  Query
     getMediaTitle(title: String!): IndividualMedia
 }`
 
+/**
+ * resolvers for GraphQL. 
+ * getMediaList: OMDb bulk media search.
+ * getMedia: OMDb single media lookup by IMDb ID.
+ * getMediaTitle: OMDb single media lookup by name.
+ * See: https://www.apollographql.com/docs/apollo-server/data/resolvers/
+ */
 export const resolvers = 
 {
   Query: {

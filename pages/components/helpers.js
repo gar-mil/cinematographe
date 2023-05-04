@@ -2,7 +2,7 @@ import { getMediaGQL, getMediaListGQL } from '@/lib/gql';
 import { createRoot } from 'react-dom/client';
 import { ListGroup, Row, Col, Badge } from 'react-bootstrap';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Pagination from 'react-bootstrap/Pagination';
 import { getMediaTitleGQL } from '../../lib/gql';
 
@@ -72,8 +72,21 @@ export async function search(title,page = 1)
       getMediaTitle.data.getMediaTitle.Response == "True" ? ProcessSearchSuccess(getMediaTitle,'t',activePage) : getMediaTitle.data.getMediaTitle.Error === 'Too many results.' ? TooManyResults(title) : console.log(info.data.getMediaTitle.Error);
     }
 
+    /**
+     * ProcessSearchSuccess
+     * React componenet. Creates list of movies from data returned by getMediaList.
+     * @param {Object} info JSON object returned from OMDb via GraphQL
+     * @param {String} searchType What type of search this is (valid values: 's', 't')
+     * @param {Number} activePage Current active pagination page
+     */
     function ProcessSearchSuccess(info,searchType,activePage = 1)
     {
+      /**
+       * PaginationSection
+       * Generates the pagination selector below the search results
+       * @param {*} props React properties [active: Number (Current active pagination page), totalResults: Number (total number of results that OMDb claims match this search)]
+       * @returns 
+       */
       const PaginationSection = (props) =>
       {
         
@@ -112,6 +125,14 @@ export async function search(title,page = 1)
         );
       }
 
+      /**
+       * createPaginationItem
+       * React component. Generates an item that appears in the pagination selector.
+       * @param {Number} i Number of page to be linked
+       * @param {Number} activePage Number of the active page, not necessarily the same as i
+       * @param {String} pageText Human-readable text to display in the selector. Optional, defaults to i
+       * @returns 
+       */
       function createPaginationItem(i,activePage,pageText = i)
       {
         return <Pagination.Item
@@ -143,15 +164,16 @@ export async function search(title,page = 1)
     }
   }
 
+  /**
+   * MovieDetails
+   * Initiates a query to request details about a movie from OMDb using the movie's IMDb ID.
+   * @param {String} imdbID String representing the IMDb ID of a movie
+   */
   async function MovieDetails(imdbID)
   {
     try
     {
       ParseIdResponse(await getMediaGQL(imdbID));
-      window.addEventListener("DOMContentLoaded", (event) => {
-        document.getElementById("newModal").addEventListener("click", document.getElementById('newModal').classList.add('no-display'));
-    });
-
     }
     catch (e)
     {
@@ -159,6 +181,11 @@ export async function search(title,page = 1)
     }
   }
 
+  /**
+   * ParseIdResponse
+   * Parses a JSON object returned from performing a getMediaGQL query in OMDb via GraphQL. Renders React components generated from the details.
+   * @param {Object} info JSON object
+   */
   function ParseIdResponse(info)
   {
     info.data.getMedia.Response == "True" ? ProcessIdSuccess({info}) : console.log(info.data.getMedia.Error);
@@ -228,6 +255,12 @@ export async function search(title,page = 1)
     );
   }
 
+  /**
+   * BadgeNodes
+   * React component. Accepts a string of comma-separated genres, splits them into an array, and generates bootstrap badges for each genre.
+   * @param {*} props React properties [genres: String (Comma-separated list of genres)]
+   * @returns <ImageWithFallback> React object
+   */
   function BadgeNodes(props)
   {
     const genreSplit = props.genres.split(", ");
@@ -240,8 +273,8 @@ export async function search(title,page = 1)
 
   /**
    * ImageWithFallback
-   * React component.
-   * @param {*} props React properties [altTag, fallbackSrc]
+   * React component. Generates an image that has a generic fallback image should the remote image src retrival fail.
+   * @param {*} props React properties [altTag: String (img alt tag), fallbackSrc: String (URL of generic movie poster image that will display if poster lookup fails)]
    * @returns <ImageWithFallback> React object
    */
   const ImageWithFallback = (props) => 
@@ -261,12 +294,21 @@ export async function search(title,page = 1)
     );
   };
 
+  /**
+   * onPageChange
+   * Initiates an OMDb search for a different page of results in a large query. OMDb can display 10 results at a time.
+   * @param {Number} page 
+   */
   function onPageChange(page)
   {
     search((document.getElementById('searchBox')).value,page.toString());
   }
 }
 
+/**
+ * closeDetails
+ * Hides movie details element and 'close details' button, shows search bar and movie results list.
+ */
 export function closeDetails()
 {
   const elDM = document.getElementById('detailsResults');
